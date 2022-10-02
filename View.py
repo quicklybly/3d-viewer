@@ -1,13 +1,11 @@
 import numpy as np
 from PyQt6 import uic
 from PyQt6.QtCore import pyqtSlot
-from PyQt6.QtWidgets import QMainWindow, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QFrame
 from pyqtgraph.opengl import GLMeshItem, GLViewWidget, MeshData
 
-
-# def clear_layout(layout):
-#     for _ in range(layout.count()):
-#         layout.itemAt(0).layout().widget().setParent(None)
+from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+from vedo import Plotter, Mesh
 
 
 class MainWindow(QMainWindow):
@@ -20,6 +18,11 @@ class MainWindow(QMainWindow):
         self._controller = controller
 
         uic.loadUi('resources/gui/gui.ui', self)
+
+        self.vtkWidget = QVTKRenderWindowInteractor(self.vtk_frame)
+        self.plt = Plotter(qtWidget=self.vtkWidget, bg="black")
+        self.model_layout.addWidget(self.vtkWidget)
+        self.plt.show()
 
         # connect widgets to controller
         self.resize_sb.valueChanged.connect(self._controller.resize_coefficient_changed)
@@ -40,7 +43,9 @@ class MainWindow(QMainWindow):
         self.rotate_btn.clicked.connect(self._controller.rotate_clicked)
 
         self.open_file.clicked.connect(lambda: self._controller.file_picked(self.get_file()))
-        self.save_file.clicked.connect(lambda: self._controller.file_picked(self.file_save()))
+        self.open_texture.clicked.connect(lambda: self._controller.texture_picked(self.get_texture()))
+
+        self.save_file.clicked.connect(lambda: self._controller.write_to_file(self.file_save()))
 
         # listen for model event signals
         self._model.enable_actions.connect(lambda flag: self.aciton_widget.setEnabled(flag))
@@ -50,18 +55,18 @@ class MainWindow(QMainWindow):
     def get_file(self):
         return QFileDialog.getOpenFileName(self, 'Open file', None, "Image files (*.*)")
 
+    # TODO set file type: mtl
+    def get_texture(self):
+        return QFileDialog.getOpenFileName(self, 'Open file', None, "Image files (*.*)")
+
     def file_save(self):
         return QFileDialog.getSaveFileName(self, 'Save File')
 
-    @pyqtSlot(MeshData)
-    def update_mesh(self, mesh_data):
-        self._mesh_data = mesh_data
-        if not self._is_plot_inited:
-            self._is_plot_inited = True
-            view = GLViewWidget()
-
-            mesh = GLMeshItem(
-                meshdata=self._mesh_data, smooth=True, drawFaces=False, drawEdges=True, edgeColor=(0, 1, 0, 1))
-
-            view.addItem(mesh)
-            self.model_layout.addWidget(view)
+    @pyqtSlot(object, object, str, object)
+    def update_mesh(self, vertexes, faces, texture_url, textures):
+        self.plt.clear()
+        mesh = Mesh([vertexes, faces])
+        if textures is not None:
+            mesh.texture(texture_url, tcoords=textures)
+        self.plt += mesh
+        self.plt.show()

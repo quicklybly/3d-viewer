@@ -20,7 +20,18 @@
       <item>
        <layout class="QVBoxLayout" name="model_layout_wrapper">
         <item>
-         <layout class="QVBoxLayout" name="model_layout"/>
+         <layout class="QVBoxLayout" name="model_layout">
+          <item>
+           <widget class="QFrame" name="vtk_frame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <spacer name="horizontalSpacer">
@@ -371,6 +382,13 @@
          <widget class="QPushButton" name="open_file">
           <property name="text">
            <string>Open .obj model</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="open_texture">
+          <property name="text">
+           <string>Open .mtl texture</string>
           </property>
          </widget>
         </item>

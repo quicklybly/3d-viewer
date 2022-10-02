@@ -1,13 +1,13 @@
 import numpy as np
 from PyQt6.QtCore import QObject, pyqtSignal
-from pyqtgraph.opengl import MeshData
 
 from ObjModel import ObjModel
 
 
 class Model(QObject):
     enable_actions = pyqtSignal(bool)
-    on_mesh_changed = pyqtSignal(MeshData)
+    on_mesh_changed = pyqtSignal(object, object, str, object)
+    texture_url = ""
 
     def __init__(self):
         super().__init__()
@@ -34,7 +34,8 @@ class Model(QObject):
         self.update_model_signal()
 
     def update_model_signal(self):
-        self.on_mesh_changed.emit(self._obj_model.mesh_data)
+        self.on_mesh_changed.emit(self._obj_model.vertexes, self._obj_model.faces, self.texture_url,
+                                  self._obj_model.textures)
 
     def parse_for_url(self, url):
         vertexes = np.array([
@@ -60,13 +61,12 @@ class Model(QObject):
             [7, 5, 6],
         ])
 
-        self._obj_model = ObjModel(
-            None,
-            MeshData(vertexes=vertexes, faces=faces),
-            None
-        )
+        self._obj_model = ObjModel(None, vertexes, faces, None)
         self.enable_actions.emit(True)
         self.update_model_signal()
 
     def load_to_file(self, url):
         pass
+
+    def set_texture(self, url):
+        self.texture_url = url
