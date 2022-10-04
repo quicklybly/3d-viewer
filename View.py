@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
     def update_mesh(self, vertexes, faces, texture_url, textures):
         self.plt.clear()
         mesh = Mesh([vertexes, faces])
-        if textures is not None:
+        if texture_url != "":
             mesh.texture(texture_url, tcoords=textures)
         self.plt += mesh
         self.plt.show()

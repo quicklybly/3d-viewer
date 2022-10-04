@@ -77,7 +77,7 @@ class Controller(QObject):
 
     @pyqtSlot(str)
     def file_picked(self, url):
-        self._model.parse_for_url(url)\
+        self._model.parse_for_url(url)
 
     @pyqtSlot(str)
     def texture_picked(self, url):
