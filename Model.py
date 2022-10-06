@@ -15,24 +15,70 @@ class Model(QObject):
         super().__init__()
         self._obj_model = ObjModel()
 
+    def __update_vertexes(self, transition_matrix):
+        for i in range(len(self._obj_model.vertexes)):
+            tmp = np.array(np.append(self._obj_model.vertexes[i], [1]))
+            tmp = np.dot(tmp, transition_matrix)
+            self._obj_model.vertexes[i] = tmp[:3]
+            free_coord = tmp[-1]
+            if free_coord != 1:
+                for coord in self._obj_model.vertexes[i]:
+                    coord *= 1 / free_coord
+
     def move(self, x, y, z):
-        print(x, y, z)
-        self._obj_model.move(x, y, z)
+        transition_matrix = np.array([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [x, y, z, 1]
+        ])
+        self.__update_vertexes(transition_matrix)
         self.update_model_signal()
 
     def resize(self, c):
-        print(c)
-        self._obj_model.resize(c)
+        c = 1 / c
+        transition_matrix = np.array([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, c]
+        ])
+        self.__update_vertexes(transition_matrix)
         self.update_model_signal()
 
     def rotate(self, axis, angle):
-        print(axis, angle)
-        self._obj_model.rotate(axis, angle)
+        if axis == 0:
+            transition_matrix = np.array([
+                [1, 0, 0, 0],
+                [0, np.cos(angle), -1 * np.sin(angle), 0],
+                [0, np.sin(angle), np.cos(angle), 0],
+                [0, 0, 0, 0]
+            ])
+        elif axis == 1:
+            transition_matrix = np.array([
+                [np.cos(angle), 0, np.sin(angle), 0],
+                [0, 1, 0, 0],
+                [-1 * np.sin(angle), 0, np.cos(angle), 0],
+                [0, 0, 0, 1]
+            ])
+        else:
+            transition_matrix = np.array([
+                [np.cos(angle), -1 * np.sin(angle), 0, 0],
+                [np.sin(angle), np.cos(angle), 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1]
+            ])
+        self.__update_vertexes(transition_matrix)
         self.update_model_signal()
 
     def shrink(self, cx, cy, cz):
-        print(cx, cy, cz)
-        self._obj_model.shrink(cx, cy, cz)
+        transition_matrix = np.array([
+            [cx, 0, 0, 0],
+            [0, cy, 0, 0],
+            [0, 0, cz, 0],
+            [0, 0, 0, 1]
+        ])
+        self.__update_vertexes(transition_matrix)
         self.update_model_signal()
 
     def update_model_signal(self):
@@ -49,7 +95,7 @@ class Model(QObject):
         vertexes_parameter = False
         line_element = False
         for line in file.readlines():
-            if re.fullmatch("v ([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?( )?){3}[ \n]?", line):
+            if re.fullmatch("v ([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?( )?){3}(1)?[ \n]?", line):
                 vertexes = np.append(vertexes, [list(map(float, line[1:].split()))], axis=0)
             elif re.fullmatch("vt (([0-1]+([.][0-9]*)?|[.][0-9]+)( )?){3}[ \n]?", line):
                 texture = np.append(texture, [list(map(float, line[2:].split()))[:2]], axis=0)
@@ -122,4 +168,5 @@ class Model(QObject):
         file.close()
 
     def set_texture(self, url):
-        self.texture_url = url
+        self.texture_url = url[0]
+        self.update_model_signal()

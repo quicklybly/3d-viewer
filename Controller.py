@@ -73,7 +73,7 @@ class Controller(QObject):
 
     @pyqtSlot()
     def shrink_clicked(self):
-        self._model.move(self._shrink_x, self._shrink_y, self._shrink_z)
+        self._model.shrink(self._shrink_x, self._shrink_y, self._shrink_z)
 
     @pyqtSlot(str)
     def file_picked(self, url):
