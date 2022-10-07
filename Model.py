@@ -52,7 +52,7 @@ class Model(QObject):
                 [1, 0, 0, 0],
                 [0, np.cos(angle), -1 * np.sin(angle), 0],
                 [0, np.sin(angle), np.cos(angle), 0],
-                [0, 0, 0, 0]
+                [0, 0, 0, 1]
             ])
         elif axis == 1:
             transition_matrix = np.array([
@@ -96,6 +96,7 @@ class Model(QObject):
         line_element = False
         for line in file.readlines():
             if re.fullmatch("v ([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?( )?){3}(1)?[ \n]?", line):
+                #TODO parse v 1 1 1 1
                 vertexes = np.append(vertexes, [list(map(float, line[1:].split()))], axis=0)
             elif re.fullmatch("vt (([0-1]+([.][0-9]*)?|[.][0-9]+)( )?){3}[ \n]?", line):
                 texture = np.append(texture, [list(map(float, line[2:].split()))[:2]], axis=0)
