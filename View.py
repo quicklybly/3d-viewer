@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         uic.loadUi('resources/gui/gui.ui', self)
 
         self.vtkWidget = QVTKRenderWindowInteractor(self.vtk_frame)
-        self.plt = Plotter(qtWidget=self.vtkWidget, bg="black")
+        self.plt = Plotter(qtWidget=self.vtkWidget)
         self.model_layout.addWidget(self.vtkWidget)
         self.plt.show()
 
@@ -51,22 +51,21 @@ class MainWindow(QMainWindow):
         self._model.enable_actions.connect(lambda flag: self.aciton_widget.setEnabled(flag))
         self._model.on_mesh_changed.connect(self.update_mesh)
 
-    # TODO set file type: obj
     def get_file(self):
-        return QFileDialog.getOpenFileName(self, 'Open file', None, "Image files (*.*)")
+        return QFileDialog.getOpenFileName(self, 'Open file', None, "Image files (*.obj)")
 
-    # TODO set file type: mtl
     def get_texture(self):
-        return QFileDialog.getOpenFileName(self, 'Open file', None, "Image files (*.*)")
+        return QFileDialog.getOpenFileName(self, 'Open file', None, "Image files (*.jpg)")
 
     def file_save(self):
         return QFileDialog.getSaveFileName(self, 'Save File')
 
     @pyqtSlot(object, object, str, object)
     def update_mesh(self, vertexes, faces, texture_url, textures):
-        self.plt.clear()
+        for _ in range(len(self.plt.getMeshes())):
+            self.plt.pop(0)
         mesh = Mesh([vertexes, faces])
         if texture_url != "":
             mesh.texture(texture_url, tcoords=textures)
         self.plt += mesh
-        self.plt.show()
+        self.plt.show(axes=1)

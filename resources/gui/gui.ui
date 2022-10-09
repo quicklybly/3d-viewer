@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1237</width>
-    <height>969</height>
+    <height>977</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,7 +167,10 @@
                   <item>
                    <widget class="QDoubleSpinBox" name="angle_sb">
                     <property name="minimum">
-                     <double>-99.989999999999995</double>
+                     <double>-360.000000000000000</double>
+                    </property>
+                    <property name="maximum">
+                     <double>360.000000000000000</double>
                     </property>
                    </widget>
                   </item>
@@ -215,7 +218,10 @@
                   <item>
                    <widget class="QDoubleSpinBox" name="move_x_sb">
                     <property name="minimum">
-                     <double>-99.989999999999995</double>
+                     <double>-999.990000000000009</double>
+                    </property>
+                    <property name="maximum">
+                     <double>999.990000000000009</double>
                     </property>
                    </widget>
                   </item>
@@ -233,7 +239,10 @@
                   <item>
                    <widget class="QDoubleSpinBox" name="move_y_sb">
                     <property name="minimum">
-                     <double>-99.989999999999995</double>
+                     <double>-999.990000000000009</double>
+                    </property>
+                    <property name="maximum">
+                     <double>999.990000000000009</double>
                     </property>
                    </widget>
                   </item>
@@ -251,7 +260,10 @@
                   <item>
                    <widget class="QDoubleSpinBox" name="move_z_sb">
                     <property name="minimum">
-                     <double>-99.989999999999995</double>
+                     <double>-999.990000000000009</double>
+                    </property>
+                    <property name="maximum">
+                     <double>999.990000000000009</double>
                     </property>
                    </widget>
                   </item>
