@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1237</width>
-    <height>977</height>
+    <width>914</width>
+    <height>828</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,13 +16,43 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="handleWidth">
+       <number>5</number>
+      </property>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="model_layout_wrapper">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMaximumSize</enum>
+        </property>
         <item>
          <layout class="QVBoxLayout" name="model_layout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMaximumSize</enum>
+          </property>
           <item>
            <widget class="QFrame" name="vtk_frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -47,15 +77,39 @@
          </spacer>
         </item>
        </layout>
-      </item>
-      <item>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_2">
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMinimumSize</enum>
+        </property>
         <item>
          <widget class="QWidget" name="aciton_widget" native="true">
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMaximumSize</enum>
+           </property>
            <item>
             <widget class="QFrame" name="frame_4">
              <property name="frameShape">
@@ -97,6 +151,12 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="resize_btn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="text">
                    <string>Resize</string>
                   </property>
@@ -374,46 +434,25 @@
              </layout>
             </widget>
            </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
         </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="open_file">
-          <property name="text">
-           <string>Open .obj model</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="open_texture">
-          <property name="text">
-           <string>Open .mtl texture</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="save_file">
-          <property name="text">
-           <string>Import .obj model</string>
-          </property>
-         </widget>
-        </item>
        </layout>
-      </item>
-     </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -422,12 +461,41 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1237</width>
-     <height>34</height>
+     <width>914</width>
+     <height>30</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuImport_obj_Model">
+    <property name="title">
+     <string>Import</string>
+    </property>
+    <addaction name="open_file"/>
+    <addaction name="open_texture"/>
+   </widget>
+   <widget class="QMenu" name="menuExport">
+    <property name="title">
+     <string>Export</string>
+    </property>
+    <addaction name="save_file"/>
+   </widget>
+   <addaction name="menuImport_obj_Model"/>
+   <addaction name="menuExport"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <action name="open_file">
+   <property name="text">
+    <string>Import .obj model</string>
+   </property>
+  </action>
+  <action name="open_texture">
+   <property name="text">
+    <string>Import .jpg texture</string>
+   </property>
+  </action>
+  <action name="save_file">
+   <property name="text">
+    <string>Export .obj model</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

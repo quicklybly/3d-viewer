@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QApplication
 
 from Model import Model
 from Controller import Controller
-from View import MainWindow
+from View import MainWindow_ver1, MainWindow_ver2
 
 
 def main():
@@ -12,7 +12,8 @@ def main():
 
     model = Model()
     controller = Controller(model)
-    view = MainWindow(model, controller)
+    view = MainWindow_ver1(model, controller)
+    # view = MainWindow_ver2(model, controller)
     view.show()
 
     app.exec()
