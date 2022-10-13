@@ -19,11 +19,11 @@ class Model(QObject):
         for i in range(len(self._obj_model.vertexes)):
             tmp = np.array(np.append(self._obj_model.vertexes[i], [1]))
             tmp = np.dot(tmp, transition_matrix)
-            self._obj_model.vertexes[i] = tmp[:3]
             free_coord = tmp[-1]
+            self._obj_model.vertexes[i] = tmp[:3]
             if free_coord != 1:
-                for coord in self._obj_model.vertexes[i]:
-                    coord *= 1 / free_coord
+                for j in range(len(self._obj_model.vertexes[i])):
+                    self._obj_model.vertexes[i][j] *= 1 / free_coord
 
     def move(self, x, y, z):
         transition_matrix = np.array([
@@ -103,7 +103,7 @@ class Model(QObject):
                     vertexes = np.append(vertexes, [list(map(float, line[1:].split()))[:-1]], axis=0)
             elif re.fullmatch("vt (([0-1]+([.][0-9]*)?|[.][0-9]+)( )?){3}[ \n]?", line):
                 texture = np.append(texture, [list(map(float, line[2:].split()))[:2]], axis=0)
-            elif re.fullmatch("vt ([+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)( )?){3}[ \n]?", line):
+            elif re.fullmatch("vn ([+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)( )?){3}[ \n]?", line):
                 normals = True
             elif re.fullmatch("vp ([+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)( )?){3}[ \n]?", line):
                 vertexes_parameter = True
