@@ -26,63 +26,38 @@ class Model(QObject):
                     self._obj_model.vertexes[i][j] *= 1 / free_coord
 
     def move(self, x, y, z):
-        transition_matrix = np.array([
-            [1, 0, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 1, 0],
-            [x, y, z, 1]
-        ])
-        self.__update_vertexes(transition_matrix)
-        self.update_model_signal()
+        self.__update_vertexes(_build_move_transition_matrix(x, y, z))
 
     def resize(self, c):
-        c = 1 / c
+        self.__update_vertexes(_build_resize_transition_matrix(c))
+
+    def rotate(self, axis, angle):
+        self.__update_vertexes(_build_rotate_transition_matrix(axis, angle))
+
+    def shrink(self, cx, cy, cz):
+        self.__update_vertexes(_build_shrink_transition_matrix(cx, cy, cz))
+
+    def execute(self, operation_order):
         transition_matrix = np.array([
             [1, 0, 0, 0],
             [0, 1, 0, 0],
             [0, 0, 1, 0],
-            [0, 0, 0, c]
-        ])
-        self.__update_vertexes(transition_matrix)
-        self.update_model_signal()
-
-    def rotate(self, axis, angle):
-        angle = np.radians(angle)
-        if axis == 0:
-            transition_matrix = np.array([
-                [1, 0, 0, 0],
-                [0, np.cos(angle), np.sin(angle), 0],
-                [0, -1 * np.sin(angle), np.cos(angle), 0],
-                [0, 0, 0, 1]
-            ])
-        elif axis == 1:
-            transition_matrix = np.array([
-                [np.cos(angle), 0, -1 * np.sin(angle), 0],
-                [0, 1, 0, 0],
-                [np.sin(angle), 0, np.cos(angle), 0],
-                [0, 0, 0, 1]
-            ])
-        else:
-            transition_matrix = np.array([
-                [np.cos(angle), np.sin(angle), 0, 0],
-                [-1 * np.sin(angle), np.cos(angle), 0, 0],
-                [0, 0, 1, 0],
-                [0, 0, 0, 1]
-            ])
-        self.__update_vertexes(transition_matrix)
-        self.update_model_signal()
-
-    def shrink(self, cx, cy, cz):
-        transition_matrix = np.array([
-            [cx, 0, 0, 0],
-            [0, cy, 0, 0],
-            [0, 0, cz, 0],
             [0, 0, 0, 1]
         ])
+        for element in operation_order:
+            if element[0] == "rotate":
+                transition_matrix = np.dot(transition_matrix, _build_rotate_transition_matrix(element[1], element[2]))
+            elif element[0] == "move":
+                transition_matrix = np.dot(transition_matrix,
+                                           _build_move_transition_matrix(element[1], element[2], element[3]))
+            elif element[0] == "resize":
+                transition_matrix = np.dot(transition_matrix, _build_resize_transition_matrix(element[1]))
+            else:
+                transition_matrix = np.dot(transition_matrix,
+                                           _build_shrink_transition_matrix(element[1], element[2], element[3]))
         self.__update_vertexes(transition_matrix)
-        self.update_model_signal()
 
-    def update_model_signal(self):
+    def emit_update_model_signal(self):
         self.on_mesh_changed.emit(self._obj_model.vertexes, self._obj_model.faces, self.texture_url,
                                   self._obj_model.textures)
 
@@ -143,7 +118,7 @@ class Model(QObject):
             print(message)
         self._obj_model = ObjModel(meta_text, vertexes, faces, texture)
         self.enable_actions.emit(True)
-        self.update_model_signal()
+        self.emit_update_model_signal()
 
     def load_to_file(self, url):
         file = open(url[0], 'w')
@@ -173,4 +148,55 @@ class Model(QObject):
 
     def set_texture(self, url):
         self.texture_url = url[0]
-        self.update_model_signal()
+        self.emit_update_model_signal()
+
+
+def _build_move_transition_matrix(x, y, z):
+    return np.array([
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [x, y, z, 1]
+    ])
+
+
+def _build_resize_transition_matrix(c):
+    return np.array([
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1 / c]
+    ])
+
+
+def _build_rotate_transition_matrix(axis, angle):
+    angle = np.radians(angle)
+    if axis == 0:
+        return np.array([
+            [1, 0, 0, 0],
+            [0, np.cos(angle), np.sin(angle), 0],
+            [0, -1 * np.sin(angle), np.cos(angle), 0],
+            [0, 0, 0, 1]
+        ])
+    if axis == 1:
+        return np.array([
+            [np.cos(angle), 0, -1 * np.sin(angle), 0],
+            [0, 1, 0, 0],
+            [np.sin(angle), 0, np.cos(angle), 0],
+            [0, 0, 0, 1]
+        ])
+    return np.array([
+        [np.cos(angle), np.sin(angle), 0, 0],
+        [-1 * np.sin(angle), np.cos(angle), 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ])
+
+
+def _build_shrink_transition_matrix(cx, cy, cz):
+    return np.array([
+        [cx, 0, 0, 0],
+        [0, cy, 0, 0],
+        [0, 0, cz, 0],
+        [0, 0, 0, 1]
+    ])

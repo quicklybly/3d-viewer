@@ -25,20 +25,26 @@ class MainWindow_ver1(QMainWindow):
         # connect widgets to controller
         self.resize_sb.valueChanged.connect(self._controller.resize_coefficient_changed)
         self.resize_btn.clicked.connect(self._controller.resize_clicked)
+        self.resize_cb.stateChanged.connect(self._controller.resize_flag_change)
 
         self.move_x_sb.valueChanged.connect(self._controller.move_x_changed)
         self.move_y_sb.valueChanged.connect(self._controller.move_y_changed)
         self.move_z_sb.valueChanged.connect(self._controller.move_z_changed)
         self.move_btn.clicked.connect(self._controller.move_clicked)
+        self.move_cb.stateChanged.connect(self._controller.move_flag_change)
 
         self.shrink_x_sb.valueChanged.connect(self._controller.shrink_x_changed)
         self.shrink_y_sb.valueChanged.connect(self._controller.shrink_y_changed)
         self.shrink_z_sb.valueChanged.connect(self._controller.shrink_z_changed)
         self.shrink_btn.clicked.connect(self._controller.shrink_clicked)
+        self.shrink_cb.stateChanged.connect(self._controller.shrink_flag_change)
 
         self.axis_cb.currentIndexChanged.connect(self._controller.rotate_axis_changed)
         self.angle_sb.valueChanged.connect(self._controller.rotate_angle_changed)
         self.rotate_btn.clicked.connect(self._controller.rotate_clicked)
+        self.rotate_cb.stateChanged.connect(self._controller.rotate_flag_change)
+
+        self.execute_btn.clicked.connect(self._controller.execute_clicked)
 
         self.open_file.clicked.connect(lambda: self._controller.file_picked(self.get_file()))
         self.open_texture.clicked.connect(lambda: self._controller.texture_picked(self.get_texture()))

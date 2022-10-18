@@ -5,6 +5,7 @@ class Controller(QObject):
     def __init__(self, model):
         super().__init__()
         self._model = model
+        self._order_of_operations = []
 
         self._resize_coefficient = 1
 
@@ -19,14 +20,31 @@ class Controller(QObject):
         self._rotate_axis = 0  # x:0 y:1 z:2
         self._rotate_angle = 0
 
+        self._resize_flag = False
+        self._move_flag = False
+        self._shrink_flag = False
+        self._rotate_flag = False
+
+    def __change_flag(self, flag, operation):
+        if flag:
+            self._order_of_operations.append(operation)
+        else:
+            self._order_of_operations.remove(operation)
+
     # ================RESIZE===============
     @pyqtSlot(float)
     def resize_coefficient_changed(self, c):
         self._resize_coefficient = c
 
     @pyqtSlot()
+    def resize_flag_change(self):
+        self._resize_flag = not self._resize_flag
+        self.__change_flag(self._resize_flag, "resize")
+
+    @pyqtSlot()
     def resize_clicked(self):
         self._model.resize(self._resize_coefficient)
+        self._model.emit_update_model_signal()
 
     # ================MOVE===============
     @pyqtSlot(float)
@@ -42,8 +60,14 @@ class Controller(QObject):
         self._move_z = mz
 
     @pyqtSlot()
+    def move_flag_change(self):
+        self._move_flag = not self._move_flag
+        self.__change_flag(self._move_flag, "move")
+
+    @pyqtSlot()
     def move_clicked(self):
         self._model.move(self._move_x, self._move_y, self._move_z)
+        self._model.emit_update_model_signal()
 
     # ================ROTATE===============
     @pyqtSlot(float)
@@ -55,8 +79,14 @@ class Controller(QObject):
         self._rotate_axis = axis
 
     @pyqtSlot()
+    def rotate_flag_change(self):
+        self._rotate_flag = not self._rotate_flag
+        self.__change_flag(self._rotate_flag, "rotate")
+
+    @pyqtSlot()
     def rotate_clicked(self):
         self._model.rotate(self._rotate_axis, self._rotate_angle)
+        self._model.emit_update_model_signal()
 
     # ================SHRINK===============
     @pyqtSlot(float)
@@ -72,8 +102,32 @@ class Controller(QObject):
         self._shrink_z = mz
 
     @pyqtSlot()
+    def shrink_flag_change(self):
+        self._shrink_flag = not self._shrink_flag
+        self.__change_flag(self._shrink_flag, "shrink")
+
+    @pyqtSlot()
     def shrink_clicked(self):
         self._model.shrink(self._shrink_x, self._shrink_y, self._shrink_z)
+        self._model.emit_update_model_signal()
+
+    # ================EXECUTE=============
+    @pyqtSlot()
+    def execute_clicked(self):
+        operation_order_with_params = []
+        for elem in self._order_of_operations:
+            if elem == "resize":
+                operation_order_with_params.append(["resize", self._resize_coefficient])
+            elif elem == "move":
+                operation_order_with_params.append(["move", self._move_x, self._move_y, self._move_z])
+            elif elem == "rotate":
+                operation_order_with_params.append(["rotate", self._rotate_axis, self._rotate_angle])
+            else:
+                operation_order_with_params.append(["shrink", self._shrink_x, self._shrink_y, self._shrink_z])
+        self._model.execute(operation_order_with_params)
+        self._model.emit_update_model_signal()
+
+    # ================FILES===============
 
     @pyqtSlot(str)
     def file_picked(self, url):
