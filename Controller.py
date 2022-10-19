@@ -44,7 +44,6 @@ class Controller(QObject):
     @pyqtSlot()
     def resize_clicked(self):
         self._model.resize(self._resize_coefficient)
-        self._model.emit_update_model_signal()
 
     # ================MOVE===============
     @pyqtSlot(float)
@@ -67,7 +66,6 @@ class Controller(QObject):
     @pyqtSlot()
     def move_clicked(self):
         self._model.move(self._move_x, self._move_y, self._move_z)
-        self._model.emit_update_model_signal()
 
     # ================ROTATE===============
     @pyqtSlot(float)
@@ -86,7 +84,6 @@ class Controller(QObject):
     @pyqtSlot()
     def rotate_clicked(self):
         self._model.rotate(self._rotate_axis, self._rotate_angle)
-        self._model.emit_update_model_signal()
 
     # ================SHRINK===============
     @pyqtSlot(float)
@@ -109,7 +106,6 @@ class Controller(QObject):
     @pyqtSlot()
     def shrink_clicked(self):
         self._model.shrink(self._shrink_x, self._shrink_y, self._shrink_z)
-        self._model.emit_update_model_signal()
 
     # ================EXECUTE=============
     @pyqtSlot()
@@ -125,7 +121,6 @@ class Controller(QObject):
             else:
                 operation_order_with_params.append(["shrink", self._shrink_x, self._shrink_y, self._shrink_z])
         self._model.execute(operation_order_with_params)
-        self._model.emit_update_model_signal()
 
     # ================FILES===============
 

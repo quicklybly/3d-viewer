@@ -27,15 +27,19 @@ class Model(QObject):
 
     def move(self, x, y, z):
         self.__update_vertexes(_build_move_transition_matrix(x, y, z))
+        self.emit_update_model_signal()
 
     def resize(self, c):
         self.__update_vertexes(_build_resize_transition_matrix(c))
+        self.emit_update_model_signal()
 
     def rotate(self, axis, angle):
         self.__update_vertexes(_build_rotate_transition_matrix(axis, angle))
+        self.emit_update_model_signal()
 
     def shrink(self, cx, cy, cz):
         self.__update_vertexes(_build_shrink_transition_matrix(cx, cy, cz))
+        self.emit_update_model_signal()
 
     def execute(self, operation_order):
         transition_matrix = np.array([
@@ -56,6 +60,7 @@ class Model(QObject):
                 transition_matrix = np.dot(transition_matrix,
                                            _build_shrink_transition_matrix(element[1], element[2], element[3]))
         self.__update_vertexes(transition_matrix)
+        self.emit_update_model_signal()
 
     def emit_update_model_signal(self):
         self.on_mesh_changed.emit(self._obj_model.vertexes, self._obj_model.faces, self.texture_url,
