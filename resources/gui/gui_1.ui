@@ -70,16 +70,17 @@
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_3">
                   <item>
-                   <widget class="QLabel" name="label">
+                   <widget class="QCheckBox" name="resize_cb">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::RightToLeft</enum>
+                    </property>
                     <property name="text">
                      <string>Resize</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="resize_cb">
-                    <property name="text">
-                     <string>CheckBox</string>
                     </property>
                    </widget>
                   </item>
@@ -132,16 +133,17 @@
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_5">
                   <item>
-                   <widget class="QLabel" name="label_14">
+                   <widget class="QCheckBox" name="rotate_cb">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::RightToLeft</enum>
+                    </property>
                     <property name="text">
                      <string>Rotate</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="rotate_cb">
-                    <property name="text">
-                     <string>CheckBox</string>
                     </property>
                    </widget>
                   </item>
@@ -224,16 +226,17 @@
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_6">
                   <item>
-                   <widget class="QLabel" name="label_17">
+                   <widget class="QCheckBox" name="move_cb">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::RightToLeft</enum>
+                    </property>
                     <property name="text">
                      <string>Move</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="move_cb">
-                    <property name="text">
-                     <string>CheckBox</string>
                     </property>
                    </widget>
                   </item>
@@ -328,16 +331,17 @@
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_7">
                   <item>
-                   <widget class="QLabel" name="label_10">
+                   <widget class="QCheckBox" name="shrink_cb">
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::RightToLeft</enum>
+                    </property>
                     <property name="text">
                      <string>Shrink</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="shrink_cb">
-                    <property name="text">
-                     <string>CheckBox</string>
                     </property>
                    </widget>
                   </item>
@@ -474,7 +478,7 @@
      <x>0</x>
      <y>0</y>
      <width>959</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
