@@ -19,11 +19,7 @@ class Model(QObject):
         for i in range(len(self._obj_model.vertexes)):
             tmp = np.array(np.append(self._obj_model.vertexes[i], [1]))
             tmp = np.dot(tmp, transition_matrix)
-            free_coord = tmp[-1]
             self._obj_model.vertexes[i] = tmp[:3]
-            if free_coord != 1:
-                for j in range(len(self._obj_model.vertexes[i])):
-                    self._obj_model.vertexes[i][j] *= 1 / free_coord
 
     def move(self, x, y, z):
         self.__update_vertexes(_build_move_transition_matrix(x, y, z))
@@ -36,6 +32,19 @@ class Model(QObject):
 
     def shrink(self, cx, cy, cz):
         self.__update_vertexes(_build_shrink_transition_matrix(cx, cy, cz))
+
+    def resize_around_point(self, point_x, point_y, point_z, resize_coefficient):
+        self.shrink_along_free_axis(point_x, point_y, point_z, resize_coefficient, resize_coefficient,
+                                    resize_coefficient)
+
+    def shrink_along_free_axis(self, point_x, point_y, point_z, cx, cy, cz):
+        self.__update_vertexes(np.dot(_build_move_transition_matrix(-1 * point_x, -1 * point_y, -1 * point_z),
+                                      _build_shrink_transition_matrix(cx, cy,
+                                                                      cz),
+                                      _build_move_transition_matrix(point_x, point_y, point_x)))
+
+    def rotate_along_free_axis(self, point_x, point_y, point_z, angle):
+        pass
 
     def emit_update_model_signal(self):
         self.on_mesh_changed.emit(self._obj_model.vertexes, self._obj_model.faces, self.texture_url,
@@ -131,21 +140,16 @@ class Model(QObject):
         self.emit_update_model_signal()
 
 
+def _build_resize_transition_matrix(c):
+    return _build_shrink_transition_matrix(c, c, c)
+
+
 def _build_move_transition_matrix(x, y, z):
     return np.array([
         [1, 0, 0, 0],
         [0, 1, 0, 0],
         [0, 0, 1, 0],
         [x, y, z, 1]
-    ])
-
-
-def _build_resize_transition_matrix(c):
-    return np.array([
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1 / c]
     ])
 
 
