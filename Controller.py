@@ -114,17 +114,15 @@ class Controller(QObject):
     # ================EXECUTE=============
     @pyqtSlot()
     def execute_clicked(self):
-        operation_order_with_params = []
         for elem in self._order_of_operations:
             if elem == "resize":
-                operation_order_with_params.append(["resize", self._resize_coefficient])
+                self._model.resize(self._resize_coefficient)
             elif elem == "move":
-                operation_order_with_params.append(["move", self._move_x, self._move_y, self._move_z])
+                self._model.move(self._move_x, self._move_y, self._move_y)
             elif elem == "rotate":
-                operation_order_with_params.append(["rotate", self._rotate_axis, self._rotate_angle])
-            else:
-                operation_order_with_params.append(["shrink", self._shrink_x, self._shrink_y, self._shrink_z])
-        self._model.execute(operation_order_with_params)
+                self._model.rotate(self._rotate_axis, self._rotate_angle)
+            elif elem == "shrink":
+                self._model.shrink(self._shrink_x, self._shrink_y, self._shrink_z)
         self._model.emit_update_model_signal()
 
     # ================FILES===============
