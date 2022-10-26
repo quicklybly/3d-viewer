@@ -67,7 +67,7 @@ class MainWindow_ver1(QMainWindow):
     @pyqtSlot(object, object, str, object)
     def update_mesh(self, vertexes, faces, texture_url, textures):
         for _ in range(len(self.plt.getMeshes())):
-            self.plt.pop(0)
+            self.plt.pop()
         mesh = Mesh([vertexes, faces])
         if texture_url != "":
             mesh.texture(texture_url, tcoords=textures)
@@ -130,7 +130,7 @@ class MainWindow_ver2(QMainWindow):
     @pyqtSlot(object, object, str, object)
     def update_mesh(self, vertexes, faces, texture_url, textures):
         for _ in range(len(self.plt.getMeshes())):
-            self.plt.pop(0)
+            self.plt.pop()
         mesh = Mesh([vertexes, faces])
         if texture_url != "":
             mesh.texture(texture_url, tcoords=textures)

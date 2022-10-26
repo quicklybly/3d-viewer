@@ -34,17 +34,18 @@ class Model(QObject):
         self.__update_vertexes(_build_shrink_transition_matrix(cx, cy, cz))
 
     def resize_around_point(self, point_x, point_y, point_z, resize_coefficient):
-        self.shrink_along_free_axis(point_x, point_y, point_z, resize_coefficient, resize_coefficient,
-                                    resize_coefficient)
+        self.__update_vertexes(
+            _build_shrink_along_free_axis_transition_matrix(point_x, point_y, point_z, resize_coefficient,
+                                                            resize_coefficient, resize_coefficient))
 
     def shrink_along_free_axis(self, point_x, point_y, point_z, cx, cy, cz):
-        self.__update_vertexes(np.dot(_build_move_transition_matrix(-1 * point_x, -1 * point_y, -1 * point_z),
-                                      _build_shrink_transition_matrix(cx, cy,
-                                                                      cz),
-                                      _build_move_transition_matrix(point_x, point_y, point_x)))
+        self.__update_vertexes(_build_shrink_along_free_axis_transition_matrix(point_x, point_y, point_z, cx, cy, cz))
 
     def rotate_along_free_axis(self, point_x, point_y, point_z, angle):
-        pass
+        if not point_x and not point_y and not point_z:
+            print("Error zero length vector")
+            return
+        self.__update_vertexes(_build_rotate_along_free_axis_transformation_matrix(point_x, point_y, point_z, angle))
 
     def emit_update_model_signal(self):
         self.on_mesh_changed.emit(self._obj_model.vertexes, self._obj_model.faces, self.texture_url,
@@ -183,4 +184,30 @@ def _build_shrink_transition_matrix(cx, cy, cz):
         [0, cy, 0, 0],
         [0, 0, cz, 0],
         [0, 0, 0, 1]
+    ])
+
+
+def _build_rotate_along_free_axis_transformation_matrix(point_x, point_y, point_z, angle):
+    angle = np.radians(angle)
+    denominator = np.sqrt(np.power(point_x, 2) + np.power(point_y, 2) + np.power(point_z, 2))
+    n1 = point_x / denominator
+    n2 = point_y / denominator
+    n3 = point_z / denominator
+    return np.array([
+        [np.power(n1, 2) + (1 - np.power(n1, 2)) * np.cos(angle), n1 * n2 * (1 - np.cos(angle)) + n3 * np.sin(angle),
+         n1 * n3 * (1 - np.cos(angle)) - n2 * np.sin(angle), 0],
+        [n1 * n2 * (1 - np.cos(angle)) - n3 * np.sin(angle), np.power(n2, 2) + (1 - np.power(n2, 2)) * np.cos(angle),
+         n2 * n3 * (1 - np.cos(angle)) + n1 * np.sin(angle), 0],
+        [n1 * n3 * (1 - np.cos(angle)) + n2 * np.sin(angle), n2 * n3 * (1 - np.cos(angle)) - n1 * np.sin(angle),
+         np.power(n3, 2) + (1 - np.power(n3, 2)) * np.cos(angle), 0],
+        [0, 0, 0, 1]
+    ])
+
+
+def _build_shrink_along_free_axis_transition_matrix(point_x, point_y, point_z, cx, cy, cz):
+    return np.array([
+        [cx, 0, 0, 0],
+        [0, cy, 0, 0],
+        [0, 0, cz, 0],
+        [(1 - cx) * point_x, (1 - cy) * point_y, (1 - cz) * point_z, 1]
     ])
