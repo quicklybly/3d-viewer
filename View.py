@@ -18,7 +18,7 @@ class MainWindow_ver1(QMainWindow):
         uic.loadUi('resources/gui/gui_1.ui', self)
 
         self.vtkWidget = QVTKRenderWindowInteractor(self.vtk_frame)
-        self.plt = Plotter(qtWidget=self.vtkWidget)
+        self.plt = Plotter(qt_widget=self.vtkWidget)
         self.model_layout.addWidget(self.vtkWidget)
         self.plt.show()
 
@@ -87,7 +87,7 @@ class MainWindow_ver2(QMainWindow):
         self.splitter.setSizes([500, 200])
 
         self.vtkWidget = QVTKRenderWindowInteractor(self.vtk_frame)
-        self.plt = Plotter(qtWidget=self.vtkWidget)
+        self.plt = Plotter(qt_widget=self.vtkWidget)
         self.model_layout.addWidget(self.vtkWidget)
         self.plt.show()
 
