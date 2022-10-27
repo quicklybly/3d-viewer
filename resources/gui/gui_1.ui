@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>3257</width>
-    <height>1407</height>
+    <width>1263</width>
+    <height>1331</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,7 +60,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>500</width>
+            <width>300</width>
             <height>16777215</height>
            </size>
           </property>
@@ -72,8 +72,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>496</width>
-             <height>1138</height>
+             <width>298</width>
+             <height>1132</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_13">
@@ -164,6 +164,13 @@
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_10">
                       <item>
+                       <widget class="QLabel" name="label_14">
+                        <property name="text">
+                         <string>Point</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
                        <layout class="QHBoxLayout" name="horizontalLayout_26">
                         <item>
                          <widget class="QLabel" name="label_5">
@@ -173,7 +180,7 @@
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+                         <widget class="QDoubleSpinBox" name="resize_for_point_x_sb">
                           <property name="minimum">
                            <double>-99.000000000000000</double>
                           </property>
@@ -191,7 +198,7 @@
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBox_7">
+                         <widget class="QDoubleSpinBox" name="resize_for_point_y_sb">
                           <property name="minimum">
                            <double>-99.000000000000000</double>
                           </property>
@@ -209,7 +216,7 @@
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
+                         <widget class="QDoubleSpinBox" name="resize_for_point_z_sb">
                           <property name="minimum">
                            <double>-99.000000000000000</double>
                           </property>
@@ -221,6 +228,19 @@
                     </widget>
                    </item>
                   </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_4">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                  <item>
                   <widget class="QPushButton" name="resize_btn">
@@ -344,16 +364,23 @@
                       <item>
                        <layout class="QVBoxLayout" name="verticalLayout_8">
                         <item>
+                         <widget class="QLabel" name="label_17">
+                          <property name="text">
+                           <string>Axis Vector</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
                          <layout class="QHBoxLayout" name="horizontalLayout_23">
                           <item>
                            <widget class="QLabel" name="label_4">
                             <property name="text">
-                             <string>x</string>
+                             <string>X</string>
                             </property>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                           <widget class="QDoubleSpinBox" name="rotate_custom_axis_x_sb">
                             <property name="minimum">
                              <double>-99.000000000000000</double>
                             </property>
@@ -366,12 +393,12 @@
                           <item>
                            <widget class="QLabel" name="label_3">
                             <property name="text">
-                             <string>y</string>
+                             <string>Y</string>
                             </property>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                           <widget class="QDoubleSpinBox" name="rotate_custom_axis_y_sb">
                             <property name="minimum">
                              <double>-99.000000000000000</double>
                             </property>
@@ -384,12 +411,12 @@
                           <item>
                            <widget class="QLabel" name="label">
                             <property name="text">
-                             <string>z</string>
+                             <string>Z</string>
                             </property>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                           <widget class="QDoubleSpinBox" name="rotate_custom_axis_z_sb">
                             <property name="minimum">
                              <double>-99.000000000000000</double>
                             </property>
@@ -403,6 +430,19 @@
                     </widget>
                    </item>
                   </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -646,19 +686,6 @@
                        </item>
                       </layout>
                      </item>
-                     <item>
-                      <spacer name="verticalSpacer_4">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
                     </layout>
                    </item>
                    <item>
@@ -671,16 +698,23 @@
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_11">
                       <item>
+                       <widget class="QLabel" name="label_21">
+                        <property name="text">
+                         <string>Point</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
                        <layout class="QHBoxLayout" name="horizontalLayout_27">
                         <item>
                          <widget class="QLabel" name="label_6">
                           <property name="text">
-                           <string>x</string>
+                           <string>X</string>
                           </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+                         <widget class="QDoubleSpinBox" name="shrink_for_point_x_sb">
                           <property name="minimum">
                            <double>-99.000000000000000</double>
                           </property>
@@ -693,12 +727,12 @@
                         <item>
                          <widget class="QLabel" name="label_9">
                           <property name="text">
-                           <string>y</string>
+                           <string>Y</string>
                           </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBox_8">
+                         <widget class="QDoubleSpinBox" name="shrink_for_point_y_sb">
                           <property name="minimum">
                            <double>-99.000000000000000</double>
                           </property>
@@ -711,12 +745,16 @@
                         <item>
                          <widget class="QLabel" name="label_10">
                           <property name="text">
-                           <string>z</string>
+                           <string>Z</string>
                           </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBox_9"/>
+                         <widget class="QDoubleSpinBox" name="shrink_for_point_z_sb">
+                            <property name="minimum">
+                           <double>-99.000000000000000</double>
+                          </property>
+                         </widget>
                         </item>
                        </layout>
                       </item>
@@ -724,6 +762,19 @@
                     </widget>
                    </item>
                   </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                  <item>
                   <widget class="QPushButton" name="shrink_btn">
@@ -789,8 +840,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>3257</width>
-     <height>34</height>
+     <width>1263</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
