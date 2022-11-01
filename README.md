@@ -9,7 +9,7 @@
 
 ### Installation guide
 
-![Command Line Tools](./assets/terminal.png?raw=true)
+![Command Line Tools](./resources/readme/terminal.png?raw=true)
 
 1. Clone repository
 2. Create virtual environment
