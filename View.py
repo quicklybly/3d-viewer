@@ -1,8 +1,6 @@
-import numpy as np
 from PyQt6 import uic
 from PyQt6.QtCore import pyqtSlot
 from PyQt6.QtWidgets import QMainWindow, QFileDialog, QFrame
-from pyqtgraph.opengl import GLMeshItem, GLViewWidget, MeshData
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from vedo import Plotter, Mesh
